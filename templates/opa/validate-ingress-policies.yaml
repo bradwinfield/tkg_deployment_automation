@@ -1,0 +1,73 @@
+# name ingresses invalid or valid as expected results are based on ingress name
+# valid ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: valid-ingress
+spec:
+  rules:
+  - host: ingress.{{ site_name }}in.company.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: hello-kubernetes-hello-world
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+---
+# invalid no host entry
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: invalid-ingress-a
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: hello-kubernetes-hello-world
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+---
+# invalid domain
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: invalid-ingress-b
+spec:
+  rules:
+  - host: "ingress.company.com"
+    http:
+      paths:
+      - backend:
+          service:
+            name: hello-kubernetes-hello-world
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+---
+# invalid wildcard
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: invalid-ingress-c
+spec:
+  rules:
+  - host: "*.company.com"
+    http:
+      paths:
+      - backend:
+          service:
+            name: hello-kubernetes-hello-world
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+---
+

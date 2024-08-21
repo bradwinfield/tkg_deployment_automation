@@ -1,0 +1,42 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPSPAllowedUsers
+metadata:
+  name: psp-pods-allowed-user-ranges
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    excludedNamespaces:
+      - kube-*
+      - tkg-*
+      - tanzu-*
+      - vmware-*
+      - dynatrace*
+      - confluent
+      - mongodb
+      - twistlock
+      - cert-manager
+      - secretgen-controller
+      - pass-expiry-*
+  parameters:
+    runAsUser:
+      rule: MustRunAs # MustRunAsNonRoot # RunAsAny 
+      ranges:
+        - min: 1
+          max: 65535
+    runAsGroup:
+      rule: MustRunAs # MayRunAs # RunAsAny 
+      ranges:
+        - min: 1
+          max: 65535
+    supplementalGroups:
+      rule: MustRunAs # MayRunAs # RunAsAny 
+      ranges:
+        - min: 1
+          max: 65535
+    fsGroup:
+      rule: MustRunAs # MayRunAs # RunAsAny 
+      ranges:
+        - min: 1
+          max: 65535

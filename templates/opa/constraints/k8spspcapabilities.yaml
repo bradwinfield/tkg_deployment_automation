@@ -1,0 +1,21 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPSPCapabilities
+metadata:
+  name: k8spspcapabilities
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    excludedNamespaces:
+      - kube-*
+      - tkg-*
+      - tanzu-*
+      - vmware-*
+      - dynatrace*
+      - mongodb
+      - twistlock
+      - pass-expiry-*
+  parameters:
+    # allowedCapabilities: ["something"]
+    requiredDropCapabilities: ["ALL"]

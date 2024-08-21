@@ -1,0 +1,65 @@
+Cannot connect to storage
+Cannot find vSphere HA master agent
+Datastore usage on disk
+ESXi Host Certificate Status
+Errors occurred on the disk(s) of a vSAN host
+Expired host license
+Expired host time-limited license
+Expired vCenter Server license
+Expired vCenter Server time-limited license
+Expired vSAN time-limited license
+Health status changed alarm
+Host Baseboard Management Controller status
+Host CPU usage
+Host IPMI System Event Log status
+Host battery status
+Host connection and power state
+Host connection failure
+Host error
+Host hardware fan status
+Host hardware power status
+Host hardware system board status
+Host hardware temperature status
+Host hardware voltage
+Host memory status
+Host memory usage
+Host processor status
+Host storage status
+Identity Health Alarm
+Insufficient vSphere HA failover resources
+License capacity monitoring
+License error
+License inventory monitoring
+Migration error
+Network connectivity lost
+Network uplink redundancy degraded
+Network uplink redundancy lost
+Performance Charts Service Health Alarm
+Service Control Agent Health Alarm
+Status of other host hardware objects
+VMKernel NIC not configured correctly
+VMware vAPI Endpoint Service Health Alarm
+VMware vSphere Profile-Driven Storage Service Health Alarm
+Virtual machine CPU usage
+Virtual machine Consolidation Needed status
+Virtual machine error
+vCenter Server Health Alarm
+vSAN network alarm 'Active multicast connectivity check'
+vSAN cluster alarm 'Advanced vSAN configuration in sync'
+vCenter HA Cluster Health Alarm
+vSAN physical disk alarm 'Congestion'
+vSAN network alarm 'Hosts with connectivity issues'
+vSAN physical disk alarm 'Disk capacity'
+vSAN network alarm 'Hosts disconnected from VC'
+vSAN capacity utilization alarm 'Component'
+vSAN physical disk alarm 'Memory pools (heaps)'
+vSAN performance service alarm 'Stats primary election'
+vSAN hardware compatibility alarm 'Disks usage on storage controller'
+vSAN physical disk alarm 'Physical disk health retrieval issue'
+vSAN cluster alarm 'Software version compatibility'
+vSAN performance service alarm 'Stats DB object conflicts'
+vSAN cluster alarm 'vSAN disk balance'
+vSAN data alarm 'vSAN object'
+vSphere Client Health Alarm
+vSphere HA failover in progress
+vSphere HA host status

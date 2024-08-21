@@ -1,0 +1,47 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sAllowedRepos
+metadata:
+  name: allowed-repos
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    # namespaces:
+    #   - "*""
+    excludedNamespaces:
+      - kube-*
+      - tkg-*
+      - tanzu-*
+      - vmware-*
+      - dynatrace*
+      - confluent
+      - mongodb
+      - twistlock
+      - pass-expiry-*
+  parameters:
+    repos:
+      # docker.io
+      - "docker.io/confluentinc/"
+      - "confluentinc/"
+      - "vmware/"
+      - "docker.io/dynatrace/"
+      - "dynatrace/"
+      - "openpolicyagent/"
+      - "docker.io/kennethreitz/httpbin" # used in ingress smoke test_ingress.py
+      - "bitnami/kubectl"
+      # tmc
+      - "*.tmc.cloud.vmware.com/"
+      # dynatrace
+      - "lcw37322.live.dynatrace.com/"
+      # or
+      # "*.live.dynatrace.com/"
+      # company jfrog
+      - "company-repo.jfrog.io/"
+      # vmware
+      - "projects.registry.vmware.com/"
+      # quay - mongodb
+      - "quay.io/mongodb/"
+      # twistlock
+      - "registry-auth.twistlock.com/"
+      - "localhost:5000/tkg/packages/"

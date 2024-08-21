@@ -1,0 +1,66 @@
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  annotations:
+    apparmor.security.beta.kubernetes.io/allowedProfileNames: runtime/default
+    apparmor.security.beta.kubernetes.io/defaultProfileName: runtime/default
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: docker/default,runtime/default
+    seccomp.security.alpha.kubernetes.io/defaultProfileName: runtime/default
+  name: pass-expiry
+spec:
+  allowPrivilegeEscalation: false
+  fsGroup:
+    ranges:
+    - max: 65535
+      min: 1
+    rule: MustRunAs
+  requiredDropCapabilities:
+  - NONE
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    ranges:
+    - max: 65535
+      min: 1
+    rule: MustRunAs
+  volumes:
+  - configMap
+  - emptyDir
+  - projected
+  - secret
+  - downwardAPI
+  - persistentVolumeClaim
+  - hostPath
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pass-expiry
+rules:
+- apiGroups:
+  - policy
+  resourceNames:
+  - pass-expiry
+  resources:
+  - podsecuritypolicies
+  verbs:
+  - use
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  creationTimestamp: "2023-10-17T19:00:18Z"
+  name: pass-expiry
+  namespace: pass-expiry-ns
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pass-expiry
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:authenticated

@@ -1,0 +1,10 @@
+allowVolumeExpansion: true
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ custom_storage_class_name }} ## Pass the name of new custom special purpose storage policy eg. custom-app-storage
+parameters:
+  svStorageClass: {{ storage_policy_name }} ## Pass thee name of existing Storage policy. eg. tanzu-sp
+provisioner: csi.vsphere.vmware.com
+reclaimPolicy: {{ reclaimpolicy_type }} ## either Delete or Retain
+volumeBindingMode: {{ volumebindingmode }} ## WaitForFirstConsumer Or Immediate

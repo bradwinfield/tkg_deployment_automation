@@ -1,0 +1,115 @@
+{
+    "url": "https://10.220.30.131/api/systemconfiguration",
+    "uuid": "default",
+    "_last_modified": "1682084587005596",
+    "dns_configuration": {
+      "search_domain": ""
+    },
+    "ntp_configuration": {
+      "ntp_servers": [
+        {
+          "server": {
+            "addr": "0.us.pool.ntp.org",
+            "type": "DNS"
+          }
+        },
+        {
+          "server": {
+            "addr": "1.us.pool.ntp.org",
+            "type": "DNS"
+          }
+        },
+        {
+          "server": {
+            "addr": "2.us.pool.ntp.org",
+            "type": "DNS"
+          }
+        },
+        {
+          "server": {
+            "addr": "3.us.pool.ntp.org",
+            "type": "DNS"
+          }
+        }
+      ]
+    },
+    "portal_configuration": {
+      "enable_https": true,
+      "redirect_to_https": true,
+      "enable_http": true,
+      "use_uuid_from_input": false,
+      "enable_clickjacking_protection": true,
+      "allow_basic_authentication": false,
+      "password_strength_check": true,
+      "disable_remote_cli_shell": false,
+      "disable_swagger": false,
+      "api_force_timeout": 24,
+      "minimum_password_length": 8,
+      "sslkeyandcertificate_refs": [
+        "https://10.220.30.131/api/sslkeyandcertificate/sslkeyandcertificate-54136643-58c6-4a31-a719-9f2e5ce15f54#System-Default-Portal-Cert",
+        "https://10.220.30.131/api/sslkeyandcertificate/sslkeyandcertificate-af61d865-8ec8-4096-8cd6-c84f67c78ec3#System-Default-Portal-Cert-EC256"
+      ],
+      "sslprofile_ref": "https://10.220.30.131/api/sslprofile/sslprofile-7c5922a7-73c7-4bec-8922-aaf27aaf2c07#System-Standard-Portal"
+    },
+    "global_tenant_config": {
+      "tenant_vrf": false,
+      "se_in_provider_context": true,
+      "tenant_access_to_provider_se": true
+    },
+    "email_configuration": {
+      "smtp_type": "SMTP_LOCAL_HOST",
+      "from_email": "admin@avicontroller.net",
+      "mail_server_name": "localhost",
+      "mail_server_port": 25,
+      "disable_tls": false
+    },
+    "docker_mode": false,
+    "ssh_ciphers": [
+      "aes128-ctr",
+      "aes256-ctr"
+    ],
+    "ssh_hmacs": [
+      "hmac-sha2-512-etm@openssh.com",
+      "hmac-sha2-256-etm@openssh.com",
+      "hmac-sha2-512"
+    ],
+    "default_license_tier": "ENTERPRISE_WITH_CLOUD_SERVICES",
+    "secure_channel_configuration": {
+      "sslkeyandcertificate_refs": [
+        "https://10.220.30.131/api/sslkeyandcertificate/sslkeyandcertificate-1e8e99e1-6082-445f-8494-0757e07e9ee5#System-Default-Secure-Channel-Cert"
+      ]
+    },
+    "welcome_workflow_complete": false,
+    "fips_mode": false,
+    "enable_cors": false,
+    "common_criteria_mode": false,
+    "host_key_algorithm_exclude": "",
+    "kex_algorithm_exclude": ""
+  }
+   --
+1. Add inside the "dns_configuration" before "search_domain" this:
+"server_list": [
+{
+  "addr": "10.220.136.2",
+  "type": "V4"
+}
+],
+
+2. Update the "search_domain" this:
+"search_domain": "<search domain"
+
+
+3. Change "email_configuration" to this:
+"email_configuration": {
+    "smtp_type": "SMTP_NONE"
+  },
+
+4. Add these
+"mgmt_ip_access_control": {},
+"linux_configuration": {}
+
+5. Add outside block this:
+"method": "PUT",
+"model_name": "systemconfiguration"
+
+Put all this inside a second "data": <put it here> which is inside higher level "data":

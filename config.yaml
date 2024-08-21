@@ -1,0 +1,176 @@
+---
+# Log of results. Where do you want the deployment log to go?
+deployment_log: "/tmp/vc01_deployment.log"
+
+# vCenter parameters - This section will be specific to a vSphere cluster
+vsphere_server: "vc.xxx.com"
+vsphere_username: "administrator@vsphere.local"
+vsphere_password: "prompt"
+vsphere_datacenter: "vc01"
+storage_class: "vc01cl01-t0compute"
+datastore: "vsanDatastore"
+# What is the vsphere cluster name?
+cluster_name: "vc01cl01"
+
+tkg_user: "tkg-admin"
+tkg_user_password: "prompt"
+tkg_role: tkg
+
+distributed_switch: "vc01-dvs"
+content_library: "vc01cl01-wcp"
+vsphere_license: "xxxxxxxxxxxxxx"
+supervisor_cluster: "vc01-wcp.xx.com"
+notification_email: bwinfield@vmware.com"
+
+# vCenter TLS Endpoint Certificate to install.
+vcenter_tls_certificate: |
+  -----BEGIN CERTIFICATE-----
+  MIIDRTCCAi2gAwIBAgIUUhABp7kmFK995Awju2kdiUS9xtUwDQYJKoZIhvcNAQEL
+  ...
+  -----END CERTIFICATE-----
+
+# Do you want to automatically connect to TMC? Put the TMC URL here.
+tmc_hostname: "xxx.tmc.cloud.vmware.com"
+
+# Workload Management settings...
+vsphere_namespace: "ns1"
+workload_cluster: "wl1"
+
+# Network settings for the Supervisor cluster...
+supervisor_network_starting_ip: "10.220.30.139"
+supervisor_network_subnet_mask: "255.255.255.224"
+supervisor_network_gateway_ip: "10.220.30.158"
+supervisor_network_static_ip_pool: "10.220.30.144-10.220.30.157"
+supervisor_network_name: "esxi-mgmt"
+supervisor_network_static_address_count: "5"
+supervisor_cluster_tls_endpoint_certificate: |
+  -----BEGIN CERTIFICATE-----
+  MIIDRTCCAi2gAwIBAgIUUhABp7kmFK995Awju2kdiUS9xtUwDQYJKoZIhvcNAQEL
+  ...
+  PDc+OKrhC1mvlALt2idQuJtcJ6K4MvaNYw==
+  -----END CERTIFICATE-----
+
+# Workload Cluster
+tkr: "v1.22.9---vmware.1-tkg.1.cc71bc8"
+#tkr: "v1.23.8---vmware.3-tkg.1"
+control_plane_count: "1"
+cp_vmclass_size: "best-effort-medium"
+
+worker_node_count: "3"
+worker_vmclass_size: "best-effort-2xlarge"
+
+ctrd_disksize: "100Gi"
+kubelet_disksize: "100Gi"
+
+# Workload network
+primary_workload_network_ip: "10.220.47.0/26"
+primary_workload_network_static_gateway_ipv4: "10.220.47.62"
+primary_workload_network_static_starting_address_ipv4: "10.220.47.12"
+primary_workload_network_static_address_count: "50"
+primary_workload_network_static_subnet_mask: "255.255.255.192"
+primary_workload_network_vsphere_portgroup_name: "user-workload"
+
+# Data network (VIP network)
+data_network_ip: "10.220.47.0/26"
+data_network_static_starting_address_ipv4: "10.220.47.1"
+data_network_static_address_count: "11"
+data_network_gateway_ip: "10.220.47.62"
+data_network_vsphere_portgroup_name: "user-workload"
+
+dns_servers: "10.220.136.2,10.220.136.3"
+dns_search_domain: "h2o-75-9210.h2o.vmware.com"
+ntp_servers: "time1.oc.vmware.com,time2.oc.vmware.com,time3.oc.vmware.com,time4.oc.vmware.com"
+
+# AVI user in vSphere used to deploy AVI Controller and SEs...
+avi_vsphere_username: "avi-admin"
+avi_vsphere_password: "prompt"
+avi_role: "avi"
+avi_ipam_provider_name: "vip-data-network"
+
+# Admin username inside the AVI system; Use this to get access in the AVI UI.
+avi_username: "admin"
+avi_password: "prompt"
+avi_resource_pool: "avi"
+
+avi_license: ENTERPRISE
+avi_controller_ip: "avi.h2o-75-9210.h2o.vmware.com"
+avi_network: "esxi-mgmt"
+avi_subnet_mask: "255.255.255.224"
+avi_network_ip: "10.220.30.128/27"
+avi_default_gateway: "10.220.30.158"
+avi_content_library: "avi"
+avi_version: "22.1.6"
+avi_ova_name: "controller-22.1.6-9191"
+avi_vm_name1: "avi01"
+avi_vm_ip1: "10.220.30.131"
+avi_vm_name2: "avi02"
+avi_vm_ip2: "10.220.30.132"
+avi_vm_name3: "avi03"
+avi_vm_ip3: "10.220.30.133"
+avi_floating_ip: "10.220.30.134"
+# The AVI Service Engine IPs are allocated out of the IP Pool
+
+# 1) If you are providing a public certificate that you have already
+# obtained from a public CA, then put the cert details in
+#  avi_certificate, avi_root_certificate, avi_passphrase, and avi_private_key,
+#  and set avi_root_cert_name to "avi-root".
+#  set avi_create_self_signed_cert: "false"
+# 2) If you want this automation to ask AVI to create a self-signed certificate
+#  that will be used for the web UI, 
+# set avi_create_self_signed_cert: "true"
+avi_create_self_signed_cert: "true"
+# avi_root_cert_name: "avi-root"
+avi_root_cert_name: "System-Default-Root-CA"
+avi_controller_cert_name: "avi-controller"
+avi_passphrase: ""
+
+# This cert is used by vSphere to talk to AVI. 
+avi_certificate: |
+  -----BEGIN CERTIFICATE-----
+  MIIDRTCCAi2gAwIBAgIUUhABp7kmFK995Awju2kdiUS9xtUwDQYJKoZIhvcNAQEL
+  ...
+  PDc+OKrhC1mvlALt2idQuJtcJ6K4MvaNYw==
+  -----END CERTIFICATE-----
+
+avi_root_certificate: |
+  -----BEGIN CERTIFICATE-----
+  MIIDRTCCAi2gAwI...
+  -----END CERTIFICATE-----
+
+avi_private_key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  MIIEpQ...
+  -----END RSA PRIVATE KEY-----
+
+ingress_namespace: ingress
+ingress_tls_key_name: ingress_tls
+
+ingress_tls_certificate: |
+  -----BEGIN CERTIFICATE-----
+  MIIEpQ...
+  -----END CERTIFICATE-----
+
+ingress_tls_key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  MIIEpQ...
+  -----END RSA PRIVATE KEY-----
+
+
+# Tanzu Standard Packages
+tanzu_package_registry: "projects.registry.vmware.com/tkg/packages/standard/repo"
+tanzu_package_registry_version: "v1.6.1"
+tanzu_standard_package_repo_name: "tanzupackages"
+installed_packages_namespace: "tanzu-packages"
+
+## Parameters to create the Custom storage class inside the TKC workload cluster
+# include step: custom_storage_class.yaml if you want custom storage class.
+custom_storage_class_name: "custom-app-storage"
+storage_policy_name: "tanzu-sp"
+reclaimpolicy_type: "Retain"
+volumebindingmode: "WaitForFirstConsumer"
+
+# Customer specific items. Requires customer written steps/scripts.
+# Please take a look at the fluent-bit step. It or the template may reference these.
+splunk_url: "http-inputs-vmware.splunkcloud.com"
+splunk_port: "443"
+splunk_token: "please provide"

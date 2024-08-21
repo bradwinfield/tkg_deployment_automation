@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: cluster-admin
+  namespace: pass-expiry-ns
+spec:
+  selector:
+    matchLabels:
+      tkgs: cluster-admin
+  template:
+    metadata:
+      labels:
+        tkgs: cluster-admin
+    spec:
+      volumes:
+        - name: hostfs
+          hostPath:
+            path: /
+      initContainers:
+        - name: init
+          image: ubuntu:23.04
+          command:
+            - /bin/sh
+            - -xc
+            - |
+              chroot /host chage -l vmware-system-user \
+              && chroot /host chage -m 0 -M -1 vmware-system-user \
+              && echo expiry updated \
+              && chroot /host chage -l vmware-system-user \
+              && echo done
+          volumeMounts:
+            - name: hostfs
+              mountPath: /host
+      containers:
+        - name: sleep
+          image: localhost:5000/vmware.io/pause:3.6
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+        operator: Exists
+      - key: CriticalAddonsOnly
+        operator: Exists
+      - effect: NoExecute
+        key: node.alpha.kubernetes.io/notReady
+        operator: Exists
+      - effect: NoExecute
+        key: node.alpha.kubernetes.io/unreachable
+        operator: Exists
+      - effect: NoSchedule
+        key: kubeadmNode
+        operator: Equal
+        value: master

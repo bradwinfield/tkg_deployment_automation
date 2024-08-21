@@ -1,0 +1,22 @@
+{
+    "url": "https://10.220.30.131/api/backupconfiguration/backupconfiguration-4f48934d-1cc3-433e-91e4-4e241616d4b4#Backup-Configuration",
+    "uuid": "backupconfiguration-4f48934d-1cc3-433e-91e4-4e241616d4b4",
+    "name": "Backup-Configuration",
+    "tenant_ref": "https://10.220.30.131/api/tenant/admin#admin",
+    "_last_modified": "1682084588210563",
+    "save_local": true,
+    "maximum_backups_stored": 4,
+    "remote_file_transfer_protocol": "SCP"
+  },
+---
+
+  1. add "backup_passphrase" to this dictionary inside first brace.
+
+  2. add outside this:
+  "method": "PUT",
+  "model_name": "backupconfiguration"
+
+  put this block inside:
+  { "data": [
+      {"data": <put block above right here>}
+  ]}

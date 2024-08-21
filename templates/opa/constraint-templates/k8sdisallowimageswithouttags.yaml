@@ -1,0 +1,57 @@
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8sdisallowimageswithouttags
+  annotations:
+    metadata.gatekeeper.sh/title: "Deny images that don't have tags or the tag 'latest'."
+    metadata.gatekeeper.sh/version: 1.0.0
+    description: >-
+      Denies images with the tag 'latest' or no tag.
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sDisallowImagesWithoutTags
+
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8sdisallowimageswithouttags
+
+        # Containers
+        # This violation checks for image tag of "latest". Denies if found.
+        violation[{"msg": msg, "details": {}}] {
+          container := input.review.object.spec.containers[_]
+          image := container.image
+          parts := split(image, ":")
+          parts[1] == "latest"
+          msg := sprintf("image can not be latest. Image is: %v.", [image])
+        }
+
+        # This violation checks to make sure there is a tag. Denies if none found.
+        violation[{"msg": msg, "details": {}}] {
+          container := input.review.object.spec.containers[_]
+          image := container.image
+          pos := indexof(image, ":")
+          pos == -1
+          msg := sprintf("image must have an image tag. Image is: %v.", [image])
+        }
+
+        # Ephemeral Containers
+        # This violation checks for image tag of "latest". Denies if found.
+        violation[{"msg": msg, "details": {}}] {
+          container := input.review.object.spec.ephemeralContainers[_]
+          image := container.image
+          parts := split(image, ":")
+          parts[1] == "latest"
+          msg := sprintf("image can not be latest. Image is: %v.", [image])
+        }
+
+        # This violation checks to make sure there is a tag. Denies if none found.
+        violation[{"msg": msg, "details": {}}] {
+          container := input.review.object.spec.ephemeralContainers[_]
+          image := container.image
+          pos := indexof(image, ":")
+          pos == -1
+          msg := sprintf("image must have an image tag. Image is: %v.", [image])
+        }

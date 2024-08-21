@@ -1,0 +1,18 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sValidIngressDomain
+metadata:
+  name: ingress-valid-domain
+spec:
+  match:
+    kinds:
+      - apiGroups: ["networking.k8s.io"]
+        kinds: ["Ingress"]
+    excludedNamespaces:
+    - kube-*
+    - tkg-*
+    - tanzu-*
+    - vmware-*
+    - dynatrace*
+    - confluent
+    - mongodb
+    - twistlock

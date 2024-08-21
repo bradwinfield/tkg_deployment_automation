@@ -1,0 +1,18 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sDisallowImagesWithoutTags
+metadata:
+  name: k8sdisallowimageswithouttags
+spec:
+  match:
+    kinds:
+    - apiGroups: [""]
+      kinds: ["Pod"]
+    excludedNamespaces:
+    - kube-*
+    - tkg-*
+    - tanzu-*
+    - vmware-*
+    - dynatrace*
+    - confluent
+    - mongodb
+    - twistlock

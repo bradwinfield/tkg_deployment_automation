@@ -1,0 +1,58 @@
+---
+kind: wcpNamespace
+metadata:
+  vcenter: "{{ vsphere_server }}"
+  datacenter: "{{ vsphere_datacenter }}"
+  cluster: "{{ cluster_name }}"
+spec:
+  namespace: "{{ vsphere_namespace }}"
+  description: "This access_list must be modified for your specific environment."
+  access_list:
+    - domain: "na.corp.company.com"
+      role: OWNER
+      subject: "psas_vsp_admins"
+      subject_type: USER
+    - domain: "na.corp.company.com"
+      role: EDIT
+      subject: "psas_vsp_clu_ops"
+      subject_type: USER
+    - domain: "na.corp.company.com"
+      role: VIEW
+      subject: "psas_vsp_k8clu_admin"
+      subject_type: USER
+    - domain: "na.corp.company.com"
+      role: VIEW
+      subject: "psas_group_k8clu_ops"
+      subject_type: USER
+  cluster: "{{ vsphere_cluster_id }}"
+  config_status: RUNNING
+  messages: []
+  networks:
+    - {{ primary_workload_network_vsphere_portgroup_name }}
+  self_service_namespace: false
+  stats:
+    cpu_used: 0
+    memory_used: 0
+    storage_used: 0
+  storage_specs:
+    - policy: {{ storage_class }}
+  vm_service_spec:
+    content_libraries:
+      - {{ content_library_id }}
+    vm_classes:
+      - best-effort-large
+      - best-effort-medium
+      - guaranteed-2xlarge
+      - best-effort-2xlarge
+      - guaranteed-xsmall
+      - best-effort-small
+      - best-effort-8xlarge
+      - best-effort-xlarge
+      - guaranteed-4xlarge
+      - guaranteed-8xlarge
+      - guaranteed-small
+      - guaranteed-xlarge
+      - best-effort-4xlarge
+      - guaranteed-large
+      - guaranteed-medium
+      - best-effort-xsmall

@@ -1,0 +1,25 @@
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8sdenydefault
+  annotations:
+    metadata.gatekeeper.sh/title: "Deny Pods in the default namespace"
+    metadata.gatekeeper.sh/version: 1.0.0
+    description: >-
+      Denies the creation of pods in the default namespace.
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sDenyDefault
+
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8svalidnamespace
+
+        violation[{"msg": msg, "details": {}}] {
+          podnamespace := input.review.object.metadata.namespace
+          podnamespace == "default"
+          msg := sprintf("You can not create a pod in the '%v' namespace.", [podnamespace])
+        }

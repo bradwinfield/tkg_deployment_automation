@@ -1,0 +1,48 @@
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8svalidingressdomain
+  annotations:
+    metadata.gatekeeper.sh/title: "Block Ingress Invalid Domain"
+    metadata.gatekeeper.sh/version: 1.0.1
+    description: >-
+      Users should not be able to create Ingresses with a domain outside of the companies org.
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sValidIngressDomain
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package K8sValidIngressDomain
+
+        contains_wildcard(hostname) = true {
+          hostname == ""
+        }
+
+        contains_wildcard(hostname) = true {
+          contains(hostname, "*")
+        }
+
+        # template from site_name for wildcard dns ingress
+        contains_invalid_domain(hostname) = true {
+          not endswith(hostname, ".{{ site_name }}in.company.com")
+        }
+
+        violation[{"msg": msg}] {
+          input.review.kind.kind == "Ingress"
+          # object.get is required to detect omitted host fields
+          hostname := object.get(input.review.object.spec.rules[_], "host", "")
+          contains_wildcard(hostname)
+          msg := sprintf("Hostname '%v' is not allowed since it counts as a wildcard, which can be used to intercept traffic from other applications.", [hostname])
+        }
+
+        violation[{"msg": msg}] {
+          input.review.kind.kind == "Ingress"
+           # object.get is required to detect omitted host fields
+           hostname := object.get(input.review.object.spec.rules[_], "host", "")
+           contains_invalid_domain(hostname)
+           msg := sprintf("Hostname '%v' is not allowed since it does not end with the correct company site domain.", [hostname])
+        }
+
